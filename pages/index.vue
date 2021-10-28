@@ -48,13 +48,21 @@ export default {
         },
 
         addItemToCart: function (item) {
-            this.cart.push(item)
+            // TODO: determine why the prop data in Cart component is not re-rendering the quantity
+            const item_in_cart = _.findIndex(this.cart, function(i) { return i.id == item.id })
+            console.log(item_in_cart)
+
+            if (item_in_cart === -1) {
+                item.quantity = 1
+                this.cart.push(item)
+            } else {
+                item.quantity += 1 
+            }
         },
         
         removeItemFromCart: function(item) {
             // TODO: build this based on item id
         },
-
-    }
+    },
 }
 </script>
