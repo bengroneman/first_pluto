@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" aria-label="Remove dietary item"></button>
             </li>
         </ul>
-        <button class="btn btn-primary">Checkout</button>
+        <button class="btn btn-primary" @click="$emit('checkout')">Checkout</button>
     </div>
 </template>
 
@@ -16,5 +16,6 @@ export default {
     props: {
         items: Array,
     },
+    emits: ['checkout'] 
 }
 </script>

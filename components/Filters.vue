@@ -29,8 +29,7 @@ export default {
             // TODO: un-hard code this
             facilities: ['Lander', 'Riverton'],
             departments: ['Radiology', 'Therapy', 'Workwise', 'Lab', 'ER', 'Rehab', 'Surgery', 'OPSC', 'OB', 'ICU', 'Cardiac Rehab', 'Med Surg']
-
         }
-    }
+    },
 }
 </script>

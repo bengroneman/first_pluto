@@ -3,7 +3,11 @@
     <h1 class="py-4">Dietary Ordering System</h1>
     <div class="row justify-content-md-center">
         <aside class="col col-lg-3">
-            <Cart :items="cart"></Cart>
+            <Cart
+                :items="cart"
+                @checkout="checkoutItems"
+            >
+            </Cart>
         </aside>
         <aside class="col-md-auto">
             <!-- Filters -->
@@ -47,16 +51,29 @@ export default {
             this.dietary_items = items
         },
 
-        addItemToCart: function (item) {
+        addItemToCart: async function (item) {
             // TODO: determine why the prop data in Cart component is not re-rendering the quantity
             const item_in_cart = _.findIndex(this.cart, function(i) { return i.id == item.id })
-            console.log(item_in_cart)
 
             if (item_in_cart === -1) {
                 item.quantity = 1
                 this.cart.push(item)
             } else {
-                item.quantity += 1 
+                await this.$nextTick()
+                item.quantity += 1
+            }
+        },
+
+        checkoutItems: async function () {
+            const item_endpoint = 'http://localhost:8000/dietary/api/v1/items'
+            if (_.isEmpty(this.cart)) {
+                console.error("cannot checkout an empty cart")
+            }
+            const response = this.$axios.$post(item_endpoint, this.cart)
+            if (response.ok) {
+                console.log("successful checkout")
+            } else {
+                console.log("Whoops checkout failed")
             }
         },
         
