@@ -19,11 +19,11 @@
 
 <script>
 export default {
-    props: {
-        item: {},
-    },
-    emits: ['add-to-cart']
-}
+  props: {
+    item: {},
+  },
+  emits: ['add-to-cart'],
+};
 </script>
 
 <style lang="css">

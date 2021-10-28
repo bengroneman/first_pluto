@@ -33,53 +33,56 @@
 
 <script>
 export default {
-    // TODO: DRY up the HTML
-    data() {
-        return {
-            dietary_items: [],
-            cart: [],
-        }
+  // TODO: DRY up the HTML
+  data() {
+    return {
+      dietary_items: [],
+      cart: [],
+    };
+  },
+
+  async mounted() {
+    await this.fetchDietaryItems();
+  },
+
+  methods: {
+    async fetchDietaryItems() {
+      const items = await this.$axios.$get('http://localhost:8000/dietary/api/v1/items');
+      this.dietary_items = items;
     },
 
-    async mounted() {
-        await this.fetchDietaryItems()
+    addItemToCart: async function(item) {
+      // TODO: determine why the prop data in Cart component is not re-rendering
+      const itemInCart = _.findIndex(this.cart, function(i) {
+        return i.id == item.id;
+      });
+
+      if (itemInCart === -1) {
+        item.quantity = 1;
+        this.cart.push(item);
+      } else {
+        await this.$nextTick();
+        item.quantity += 1;
+      }
     },
 
-    methods: {
-        async fetchDietaryItems() {
-            const items = await this.$axios.$get('http://localhost:8000/dietary/api/v1/items')
-            this.dietary_items = items
-        },
+    checkoutItems: async function() {
+      const itemEndpoint = 'http://localhost:8000/dietary/api/v1/items';
+      if (_.isEmpty(this.cart)) {
+        console.error('cannot checkout an empty cart');
+      }
 
-        addItemToCart: async function (item) {
-            // TODO: determine why the prop data in Cart component is not re-rendering the quantity
-            const item_in_cart = _.findIndex(this.cart, function(i) { return i.id == item.id })
-
-            if (item_in_cart === -1) {
-                item.quantity = 1
-                this.cart.push(item)
-            } else {
-                await this.$nextTick()
-                item.quantity += 1
-            }
-        },
-
-        checkoutItems: async function () {
-            const item_endpoint = 'http://localhost:8000/dietary/api/v1/items'
-            if (_.isEmpty(this.cart)) {
-                console.error("cannot checkout an empty cart")
-            }
-            const response = this.$axios.$post(item_endpoint, this.cart)
-            if (response.ok) {
-                console.log("successful checkout")
-            } else {
-                console.log("Whoops checkout failed")
-            }
-        },
-        
-        removeItemFromCart: function(item) {
-            // TODO: build this based on item id
-        },
+      const response = this.$axios.$post(itemEndpoint, this.cart);
+      if (response.ok) {
+        console.log('successful checkout');
+      } else {
+        console.log('Whoops checkout failed');
+      }
     },
-}
+
+    removeItemFromCart: function(item) {
+      // TODO: build this based on item id
+    },
+  },
+};
 </script>
