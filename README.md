@@ -67,3 +67,8 @@ More information about the usage of this directory in [the documentation](https:
 This directory contains your Vuex store files. Creating a file in this directory automatically activates Vuex.
 
 More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/store).
+
+# Resources
+[Reactivity in Depth](https://vuejs.org/v2/guide/reactivity.html)
+[Vue Api](https://vuejs.org/v2/api/)
+[VueCasts](https://laracasts.com/series/learn-vue-2-step-by-step/)
