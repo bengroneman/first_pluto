@@ -11,7 +11,10 @@
         </aside>
         <aside class="col-md-auto">
             <!-- Filters -->
-            <Filters></Filters>
+            <Filters
+              @facilityChanged="updateFacility"
+              @departmentChanged="updateDepartment"
+            ></Filters>
 
             <!-- Search -->
             <Search></Search>
@@ -38,6 +41,10 @@ export default {
     return {
       dietary_items: [],
       cart: [],
+      filters: {
+        'department': String,
+        'facility': String,
+      },
     };
   },
 
@@ -61,6 +68,7 @@ export default {
         item.quantity = 1;
         this.cart.push(item);
       } else {
+        // This should force the update in theory..
         await this.$nextTick();
         item.quantity += 1;
       }
@@ -78,6 +86,14 @@ export default {
       } else {
         console.log('Whoops checkout failed');
       }
+    },
+
+    updateFacility: function(newFacility) {
+      this.filters.facility = newFacility;
+    },
+
+    updateDepartment: function(updateDepartment) {
+      this.filters.department = updateDepartment;
     },
 
     removeItemFromCart: function(item) {

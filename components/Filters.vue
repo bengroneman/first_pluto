@@ -7,11 +7,15 @@
         >
             Facility
         </label>
-        <select class="form-select" id="inputGroupSelect01">
+        <select
+            class="form-select"
+            id="inputGroupSelect01"
+            v-model="selectedFacility"
+        >
           <option selected>Choose...</option>
 
           <option
-                value="facility"
+                :value="facility"
                 v-for="facility in facilities"
                 :key="facility"
           >
@@ -26,10 +30,14 @@
         >
             Department
         </label>
-        <select class="form-select" id="departmentSelect">
+        <select
+            class="form-select"
+            id="departmentSelect"
+            v-model="selectedDepartment"
+        >
           <option selected>Choose...</option>
             <option
-                value="department"
+                :value="department"
                 v-for="department in departments"
                 :key="department"
             >
@@ -60,7 +68,25 @@ export default {
         'Cardiac Rehab',
         'Med Surg',
       ],
+      selectedFacility: String,
+      selectedDepartment: String,
     };
+  },
+
+  // TODO: add validation for these
+  emits: ['facilityChanged', 'departmentChanged'],
+
+  // TODO: investigate an easier way to do this
+  //       could potentially use the emitter on the select component
+  watch: {
+    selectedFacility: function(oldFacility, newFacility) {
+      this.$emit('facilityChanged', newFacility);
+    },
+
+    selectedDepartment: function(oldDepartment, newDepartment) {
+      this.$emit('departmentChanged', newDepartment);
+    },
   },
 };
 </script>
+
